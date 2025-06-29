@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="output.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+    <!-- Slider Container -->
+    <div class="slider w-full sm:h-[568px] h-[180px] m-auto relative overflow-hidden">
+    <!-- Image list -->
+        <div id="list" class="absolute top-0 left-0 h-full flex transition-transform duration-500 ease-in-out">
+            <div class="w-full flex-shrink-0">
+                <img class="w-full h-full object-cover" src="Assets/images/slider1.png" alt="Slide 1">
+            </div>
+            <div class="w-full flex-shrink-0">
+                <img class="w-full h-full object-cover" src="Assets/images/slider2.png" alt="Slide 2">
+            </div>
+            <div class="w-full flex-shrink-0">
+                <img class="w-full h-full object-cover" src="Assets/images/slider3.png" alt="Slide 3">
+            </div>
+            <div class="w-full flex-shrink-0">
+                <img class="w-full h-full object-cover" src="Assets/images/slider4.png" alt="Slide 4">
+        </div>
+    </div>
+    <!-- Navigation Buttons -->
+    <div class="absolute top-1/2 left-0 right-0 px-4 flex justify-between items-center transform -translate-y-1/2 z-10">
+        <button onclick="prev()" class="bg-white text-black w-10 h-10 rounded-full shadow"><i class="fas fa-chevron-left"></i></button>
+        <button onclick="next()" class="bg-white text-black w-10 h-10 rounded-full shadow"><i class="fas fa-chevron-right"></i></button>
+    </div>
+    <!-- Dots -->
+        <div id="dots" class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2 z-10"></div>
+
+   <script>
+    let list = document.getElementById("list");
+    let actv = 0;
+    let items = list.children;
+    let total = items.length;
+    let Dots = document.getElementById("dots");
+    
+    function prev() {
+        actv -= 1;
+        SliderReload();
+    }
+
+    function next() {
+        actv += 1;
+        SliderReload();
+    }
+
+    for (let j = 0; j < total; j++) {
+        let dot = document.createElement("div");
+        dot.className = "dot h-3 w-3 rounded-full bg-gray-400 cursor-pointer";
+        dot.dataset.index = j;
+        dots.appendChild(dot);
+        // dot.addEventListener("click",function(){
+        //     actv = j;
+        //     SliderReload();
+        //     console.log();
+        // });
+    }
+
+    function updateDotColor() {
+        let dots = document.querySelectorAll(".dot");
+        for(let j = 0; j < dots.length; j++){
+            if (j == actv){
+                dots[j].classList.add("bg-black");
+                dots[j].classList.remove("bg-gray-400");
+            }else{
+                dots[j].classList.remove("bg-black");
+                dots[j].classList.add("bg-gray-400");
+            }
+        }
+    }
+
+    function SliderReload() {
+        if(actv >= total){
+            actv = 0;
+        }
+        let width = document.querySelector(".slider").clientWidth;
+        list.style.transition = "transform 0.5s ease-in-out";
+        list.style.transform = `translateX(-${actv * width}px)`;
+      updateDotColor();
+    }
+
+    function AutoSlide() {
+            next()
+            setTimeout(AutoSlide, 3000);
+    }
+
+    SliderReload();
+    AutoSlide();
+    window.addEventListener("resize", SliderReload);
+    </script>
+    <!--slider part end-->
+</body>
+</html>
